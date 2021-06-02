@@ -17,7 +17,7 @@ final class MainTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    private var parentInfo: Parent?
+    private var parentInfo = Parent()
     private var countOfSections = 1
     private weak var delegate: MainTableViewControllerDelegate?
     
@@ -25,22 +25,22 @@ final class MainTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        parentInfo = Parent.getParent()
         configureGestureRecognizer()
         tableView.estimatedRowHeight = 192
+        tableView.keyboardDismissMode = .onDrag
     }
     
     // MARK: - IB Actions
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
         print("""
-            Пользователь: \(parentInfo?.fullName ?? "")
-            Возраст: \(parentInfo?.age ?? 0)
-            количество детей: \(parentInfo?.children.count ?? 0)
+            Пользователь: \(parentInfo.fullName ?? "")
+            Возраст: \(parentInfo.age ?? 0)
+            количество детей: \(parentInfo.children.count)
             
             Дети:
             """)
-        parentInfo?.children.forEach{print("Имя\($0.name ?? ""), возраст: \($0.age ?? 0)")}
+        parentInfo.children.forEach{print("Имя\($0.name ?? ""), возраст: \($0.age ?? 0)")}
     }
     
     // MARK: - Table view data source
@@ -50,7 +50,7 @@ final class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? 1 : (parentInfo?.children.count ?? 0)
+        section == 0 ? 1 : (parentInfo.children.count)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -66,7 +66,7 @@ final class MainTableViewController: UITableViewController {
                 return UITableViewCell()
             }
             cell.delegate = self
-            cell.configure(child: parentInfo?.children[indexPath.row], numberOfCell: indexPath.row)
+            cell.configure(child: parentInfo.children[indexPath.row], numberOfCell: indexPath.row)
             return cell
         }
     }
@@ -81,7 +81,7 @@ final class MainTableViewController: UITableViewController {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(oneTouchOnScrollView))
         tableView.addGestureRecognizer(recognizer)
     }
-    
+
     @objc private func oneTouchOnScrollView() {
         view.endEditing(true)
     }
@@ -92,9 +92,9 @@ final class MainTableViewController: UITableViewController {
 extension MainTableViewController: ChildTableViewCellDelegate {
     
     func deleteChild(child: Child) {
-        guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
-        parentInfo?.children.remove(at: index)
-        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
+        guard let index = parentInfo.children.firstIndex(where: {$0.id == child.id}) else {return}
+        parentInfo.children.remove(at: index)
+        delegate?.updateButtonState(countOfCell: parentInfo.children.count)
         
         tableView.performBatchUpdates{
             tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .left)
@@ -103,21 +103,21 @@ extension MainTableViewController: ChildTableViewCellDelegate {
                 self?.tableView.reloadData()
             }
         }
-        if parentInfo?.children.count == 0 {
+        if parentInfo.children.count == 0 {
             countOfSections = 1
             tableView.deleteSections([1], with: .none)
         }
     }
     
     func editChild(child: Child, name: String?, age: String?) {
-        guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
+        guard let index = parentInfo.children.firstIndex(where: {$0.id == child.id}) else {return}
         if name != nil && name != "" {
-            parentInfo?.children[index].name = name
+            parentInfo.children[index].name = name
         }
         
         guard let noNilAge = age else {return}
         if let ageInt = Int(noNilAge) {
-            parentInfo?.children[index].age = ageInt
+            parentInfo.children[index].age = ageInt
         }
     }
 }
@@ -126,24 +126,24 @@ extension MainTableViewController: ParentTableViewCellDelegate {
     
     func editParent(fullName: String?, age: String?) {
         if fullName != nil && fullName != "" {
-            parentInfo?.fullName = fullName
+            parentInfo.fullName = fullName
         }
         
         guard let noNilAge = age else {return}
         if let ageInt = Int(noNilAge) {
-            parentInfo?.age = ageInt
+            parentInfo.age = ageInt
         }
     }
     
     func addChild() {
-        parentInfo?.children.append(Child(name: nil, age: nil))
-        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
+        parentInfo.children.append(Child())
+        delegate?.updateButtonState(countOfCell: parentInfo.children.count)
         if countOfSections == 1 {
             countOfSections += 1
             let indexSet = IndexSet(integer: countOfSections - 1)
             tableView.insertSections(indexSet, with: .left)
         } else {
-            tableView.insertRows(at: [IndexPath(row: (parentInfo?.children.count ?? 1) - 1 , section: 1)], with: .left)
+            tableView.insertRows(at: [IndexPath(row: (parentInfo.children.count) - 1 , section: 1)], with: .left)
         }
     }
 }

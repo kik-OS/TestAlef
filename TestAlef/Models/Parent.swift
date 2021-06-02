@@ -10,11 +10,7 @@ import Foundation
 struct Parent {
     var fullName: String?
     var age: Int?
-    var children: [Child]
-    
-   static func getParent() -> Parent {
-        Parent(fullName: nil, age: nil, children: [])
-    }
+    var children: [Child] = []
 }
 
 struct Child {
