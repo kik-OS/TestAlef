@@ -11,31 +11,37 @@ class ChildTableViewCell: UITableViewCell {
     
     // MARK: - Outlets
     
-    @IBOutlet weak private var nameTextField: UITextField!
-    @IBOutlet weak private var ageTextField: UITextField!
-    @IBOutlet weak var childNumberLabel: UILabel!
+    @IBOutlet private var nameTextField: UITextField!
+    @IBOutlet private var ageTextField: UITextField!
+    @IBOutlet private var childNumberLabel: UILabel!
     
     // MARK: - Properties
     
-    var delegate: MainTableViewControllerDelegate?
-    var child: Child?
+    weak var delegate: MainTableViewControllerDelegate?
+    private var child: Child?
     
     // MARK: - IB Actions
     
-    @IBAction func nameTF() {
+    @IBAction private func nameTF() {
         delegate?.editChild(child: child ?? Child(), name: nameTextField.text, age: nil)
     }
     
-    @IBAction func ageTF() {
+    @IBAction private func ageTF() {
         delegate?.editChild(child: child ?? Child(), name: nil, age: ageTextField.text)
     }
     
-    // MARK: - Actions
-    
-    @IBAction func closedButtonTaped() {
+    @IBAction private func closedButtonTaped() {
         guard let child = child else {return}
         delegate?.deleteChild(child: child)
         nameTextField.text = ""
         ageTextField.text = ""
+    }
+    
+    // MARK: - Public Methods
+    
+    func configure(child: Child?, numberOfCell: Int) {
+        self.child = child
+        childNumberLabel.text = "👶🏻  Ребенок \(numberOfCell + 1)"
+        
     }
 }

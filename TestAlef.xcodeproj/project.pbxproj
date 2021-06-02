@@ -53,6 +53,41 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E41A358C2667C4A800DC05C0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E4BE5A22266754730023AF3F /* Parent.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E41A358D2667C4B400DC05C0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				E4BE5A1E26667ED70023AF3F /* ParentTableViewCell.swift */,
+				E4BE5A202666857D0023AF3F /* ChildTableViewCell.swift */,
+				E4BE5A1C26667B3D0023AF3F /* MainTableViewController.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		E41A358E2667C4D900DC05C0 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				E4BE5A1326667AE80023AF3F /* LaunchScreen.storyboard */,
+				E4BE5A0E26667AE20023AF3F /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		E41A358F2667D02800DC05C0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E4BE5A1126667AE80023AF3F /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		E4BE59FC26667AE20023AF3F = {
 			isa = PBXGroup;
 			children = (
@@ -72,14 +107,11 @@
 		E4BE5A0726667AE20023AF3F /* TestAlef */ = {
 			isa = PBXGroup;
 			children = (
+				E41A358F2667D02800DC05C0 /* Resources */,
+				E41A358E2667C4D900DC05C0 /* Storyboards */,
+				E41A358D2667C4B400DC05C0 /* Modules */,
+				E41A358C2667C4A800DC05C0 /* Models */,
 				E41A358B2667C11600DC05C0 /* Supporting Files */,
-				E4BE5A1E26667ED70023AF3F /* ParentTableViewCell.swift */,
-				E4BE5A0E26667AE20023AF3F /* Main.storyboard */,
-				E4BE5A202666857D0023AF3F /* ChildTableViewCell.swift */,
-				E4BE5A1C26667B3D0023AF3F /* MainTableViewController.swift */,
-				E4BE5A1126667AE80023AF3F /* Assets.xcassets */,
-				E4BE5A1326667AE80023AF3F /* LaunchScreen.storyboard */,
-				E4BE5A22266754730023AF3F /* Parent.swift */,
 			);
 			path = TestAlef;
 			sourceTree = "<group>";

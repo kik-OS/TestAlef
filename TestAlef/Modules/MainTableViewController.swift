@@ -9,21 +9,21 @@ import UIKit
 
 // MARK: - Protocols
 
-protocol MainTableViewControllerDelegate {
+protocol MainTableViewControllerDelegate: AnyObject {
     func addChild()
     func deleteChild(child: Child)
     func editChild(child: Child, name: String?, age: String?)
     func editParent(fullName: String?, age: String?)
 }
 
-class MainTableViewController: UITableViewController {
+final class MainTableViewController: UITableViewController {
     
     // MARK: - Properties
     
     private var parentInfo: Parent?
     private var countOfSections = 1
     private var delegate: ParentTableViewCellDelegate?
-
+    
     
     // MARK: - Lifecycle methods
     
@@ -51,34 +51,29 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        } else {
-            return parentInfo?.children.count ?? 0
-        }
+        section == 0 ? 1 : (parentInfo?.children.count ?? 0)
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "parent", for: indexPath) as? ParentTableViewCell
-            cell?.delegate = self
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "parent", for: indexPath) as? ParentTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
             delegate = cell
-            return cell ?? UITableViewCell()
+            return cell
         } else {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "child", for: indexPath) as? ChildTableViewCell
-        cell?.delegate = self
-        cell?.child = parentInfo?.children[indexPath.row]
-        cell?.childNumberLabel.text = "👶🏻  Ребенок \(indexPath.row + 1)"
-        return cell ?? UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "child", for: indexPath) as? ChildTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.delegate = self
+            cell.configure(child: parentInfo?.children[indexPath.row], numberOfCell: indexPath.row)
+            return cell
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Информация о себе"
-        } else {
-            return "Информация о детях"
-        }
+        section == 0 ? "Информация о себе" : "Информация о детях"
     }
     
     // MARK: - Private methods
@@ -113,11 +108,21 @@ extension MainTableViewController: MainTableViewControllerDelegate {
         guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
         parentInfo?.children.remove(at: index)
         delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
-        tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .left)
+        
+        tableView.performBatchUpdates{
+            tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .left)
+            
+        } completion: { [weak self] isDone in
+            if isDone {
+                self?.tableView.reloadData()
+            }
+        }
+        
         if parentInfo?.children.count == 0 {
             countOfSections = 1
             tableView.deleteSections([1], with: .none)
         }
+        
     }
     
     func editChild(child: Child, name: String?, age: String?) {

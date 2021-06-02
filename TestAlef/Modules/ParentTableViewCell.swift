@@ -16,7 +16,7 @@ class ParentTableViewCell: UITableViewCell, ParentTableViewCellDelegate {
     
     // MARK: - Outlets
     
-    @IBOutlet weak private var addNewChildButton: UIButton!
+    @IBOutlet private var addNewChildButton: UIButton!
     
     // MARK: - Properties
     
@@ -24,15 +24,15 @@ class ParentTableViewCell: UITableViewCell, ParentTableViewCellDelegate {
     
     // MARK: - IB Actions
     
-    @IBAction func fullNameTF(_ sender: UITextField) {
+    @IBAction private func fullNameTF(_ sender: UITextField) {
         delegate?.editParent(fullName: sender.text, age: nil)
     }
     
-    @IBAction func ageTF(_ sender: UITextField) {
+    @IBAction private func ageTF(_ sender: UITextField) {
         delegate?.editParent(fullName: nil, age: sender.text)
     }
     
-    @IBAction func addNewChildButtonPressed() {
+    @IBAction private func addNewChildButtonPressed() {
         delegate?.addChild()
     }
     
