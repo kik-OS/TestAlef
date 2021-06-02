@@ -40,6 +40,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                                                            <connections>
+                                                                <action selector="fullNameTF:" destination="9hU-fW-RNh" eventType="editingChanged" id="owF-Il-SY2"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                 </stackView>
@@ -59,6 +62,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                            <connections>
+                                                                <action selector="ageTF:" destination="9hU-fW-RNh" eventType="editingChanged" id="8HH-wK-Nxa"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                     <constraints>
@@ -141,6 +147,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="name"/>
+                                                            <connections>
+                                                                <action selector="nameTF" destination="8mB-gA-aww" eventType="editingChanged" id="ctw-Aq-ZGf"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                 </stackView>
@@ -160,6 +169,9 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                            <connections>
+                                                                <action selector="ageTF" destination="8mB-gA-aww" eventType="editingChanged" id="gRa-1f-GiT"/>
+                                                            </connections>
                                                         </textField>
                                                     </subviews>
                                                 </stackView>
@@ -186,7 +198,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Данные " id="qaH-zj-Bdh">
-                        <barButtonItem key="rightBarButtonItem" title="Сохранить" id="fMY-Xe-4oc"/>
+                        <barButtonItem key="rightBarButtonItem" title="Сохранить" id="fMY-Xe-4oc">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="R3n-UU-h7X" id="nRo-Iv-3Eu"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="enp-zZ-blS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

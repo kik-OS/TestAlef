@@ -43,6 +43,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E41A358B2667C11600DC05C0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4BE5A0826667AE20023AF3F /* AppDelegate.swift */,
+				E4BE5A0A26667AE20023AF3F /* SceneDelegate.swift */,
+				E4BE5A1626667AE80023AF3F /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E4BE59FC26667AE20023AF3F = {
 			isa = PBXGroup;
 			children = (
@@ -62,15 +72,13 @@
 		E4BE5A0726667AE20023AF3F /* TestAlef */ = {
 			isa = PBXGroup;
 			children = (
-				E4BE5A0826667AE20023AF3F /* AppDelegate.swift */,
-				E4BE5A0A26667AE20023AF3F /* SceneDelegate.swift */,
+				E41A358B2667C11600DC05C0 /* Supporting Files */,
 				E4BE5A1E26667ED70023AF3F /* ParentTableViewCell.swift */,
 				E4BE5A0E26667AE20023AF3F /* Main.storyboard */,
 				E4BE5A202666857D0023AF3F /* ChildTableViewCell.swift */,
 				E4BE5A1C26667B3D0023AF3F /* MainTableViewController.swift */,
 				E4BE5A1126667AE80023AF3F /* Assets.xcassets */,
 				E4BE5A1326667AE80023AF3F /* LaunchScreen.storyboard */,
-				E4BE5A1626667AE80023AF3F /* Info.plist */,
 				E4BE5A22266754730023AF3F /* Parent.swift */,
 			);
 			path = TestAlef;
@@ -300,7 +308,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58287L88KM;
-				INFOPLIST_FILE = TestAlef/Info.plist;
+				INFOPLIST_FILE = "TestAlef/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -320,7 +328,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 58287L88KM;
-				INFOPLIST_FILE = TestAlef/Info.plist;
+				INFOPLIST_FILE = "TestAlef/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

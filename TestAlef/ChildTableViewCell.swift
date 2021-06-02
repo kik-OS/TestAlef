@@ -18,13 +18,23 @@ class ChildTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     var delegate: MainTableViewControllerDelegate?
-    var indexPath: IndexPath?
+    var child: Child?
+    
+    // MARK: - IB Actions
+    
+    @IBAction func nameTF() {
+        delegate?.editChild(child: child ?? Child(), name: nameTextField.text, age: nil)
+    }
+    
+    @IBAction func ageTF() {
+        delegate?.editChild(child: child ?? Child(), name: nil, age: ageTextField.text)
+    }
     
     // MARK: - Actions
     
     @IBAction func closedButtonTaped() {
-        guard let indexPath = indexPath else {return}
-        delegate?.deleteChild(indexPath: indexPath)
+        guard let child = child else {return}
+        delegate?.deleteChild(child: child)
         nameTextField.text = ""
         ageTextField.text = ""
     }

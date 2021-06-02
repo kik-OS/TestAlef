@@ -10,28 +10,39 @@ import UIKit
 // MARK: - Protocols
 
 protocol MainTableViewControllerDelegate {
-    func addNewChild()
-    func deleteChild(indexPath: IndexPath)
+    func addChild()
+    func deleteChild(child: Child)
+    func editChild(child: Child, name: String?, age: String?)
+    func editParent(fullName: String?, age: String?)
 }
 
 class MainTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    private var data: Parent?
+    private var parentInfo: Parent?
     private var countOfSections = 1
     private var delegate: ParentTableViewCellDelegate?
-    
+
     
     // MARK: - Lifecycle methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        data = Parent.getParent()
+        parentInfo = Parent.getParent()
         configureGestureRecognizer()
         tableView.estimatedRowHeight = 192
     }
     
+    // MARK: - IB Actions
+    
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        print("""
+            Пользователь: \(parentInfo?.fullName ?? "")
+            Возраст: \(parentInfo?.age ?? 0)
+            количество детей: \(parentInfo?.children.count ?? 0)
+            """)
+    }
     
     // MARK: - Table view data source
     
@@ -43,7 +54,7 @@ class MainTableViewController: UITableViewController {
         if section == 0 {
             return 1
         } else {
-            return data?.children.count ?? 0
+            return parentInfo?.children.count ?? 0
         }
     }
     
@@ -53,16 +64,13 @@ class MainTableViewController: UITableViewController {
             cell?.delegate = self
             delegate = cell
             return cell ?? UITableViewCell()
-            
-            
-        }
-        
+        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "child", for: indexPath) as? ChildTableViewCell
         cell?.delegate = self
-        cell?.indexPath = indexPath
+        cell?.child = parentInfo?.children[indexPath.row]
         cell?.childNumberLabel.text = "👶🏻  Ребенок \(indexPath.row + 1)"
         return cell ?? UITableViewCell()
-        
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -88,32 +96,52 @@ class MainTableViewController: UITableViewController {
 // MARK: - Extension
 
 extension MainTableViewController: MainTableViewControllerDelegate {
-    func addNewChild() {
-        data?.children.append(Child(name: nil, age: nil))
-        delegate?.updateButtonState(countOfCell: data?.children.count ?? 0)
+    
+    func addChild() {
+        parentInfo?.children.append(Child(name: nil, age: nil))
+        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
         if countOfSections == 1 {
             countOfSections += 1
             let indexSet = IndexSet(integer: countOfSections - 1)
             tableView.insertSections(indexSet, with: .left)
         } else {
-            tableView.insertRows(at: [IndexPath(row: (data?.children.count ?? 1) - 1 , section: 1)], with: .left)
+            tableView.insertRows(at: [IndexPath(row: (parentInfo?.children.count ?? 1) - 1 , section: 1)], with: .left)
         }
-        
     }
     
-    func deleteChild(indexPath: IndexPath) {
-        data?.children.remove(at: indexPath.row)
-        delegate?.updateButtonState(countOfCell: data?.children.count ?? 0)
-        tableView.deleteRows(at: [indexPath], with: .left)
-        
-        if data?.children.count == 0 {
+    func deleteChild(child: Child) {
+        guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
+        parentInfo?.children.remove(at: index)
+        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .left)
+        if parentInfo?.children.count == 0 {
             countOfSections = 1
             tableView.deleteSections([1], with: .none)
         }
-        tableView.reloadData()
     }
     
+    func editChild(child: Child, name: String?, age: String?) {
+        guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
+        if name != nil && name != "" {
+            parentInfo?.children[index].name = name
+        }
+        
+        guard let noNilAge = age else {return}
+        if let ageInt = Int(noNilAge) {
+            parentInfo?.children[index].age = ageInt
+        }
+    }
     
+    func editParent(fullName: String?, age: String?) {
+        if fullName != nil && fullName != "" {
+            parentInfo?.fullName = fullName
+        }
+        
+        guard let noNilAge = age else {return}
+        if let ageInt = Int(noNilAge) {
+            parentInfo?.age = ageInt
+        }
+    }
 }
 
 

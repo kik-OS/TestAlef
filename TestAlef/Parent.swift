@@ -8,18 +8,18 @@
 import Foundation
 
 struct Parent {
-    let fullName: String?
-    let age: Int?
+    var fullName: String?
+    var age: Int?
     var children: [Child]
     
-    
    static func getParent() -> Parent {
-        Parent(fullName: "", age: 0, children: [])
+        Parent(fullName: nil, age: nil, children: [])
     }
 }
 
 struct Child {
-    let name: String?
-    let age: Int?
+    var name: String?
+    var age: Int?
+    let id = UUID()
 }
 
