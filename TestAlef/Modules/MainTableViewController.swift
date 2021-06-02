@@ -10,10 +10,7 @@ import UIKit
 // MARK: - Protocols
 
 protocol MainTableViewControllerDelegate: AnyObject {
-    func addChild()
-    func deleteChild(child: Child)
-    func editChild(child: Child, name: String?, age: String?)
-    func editParent(fullName: String?, age: String?)
+    func updateButtonState(countOfCell: Int)
 }
 
 final class MainTableViewController: UITableViewController {
@@ -22,8 +19,7 @@ final class MainTableViewController: UITableViewController {
     
     private var parentInfo: Parent?
     private var countOfSections = 1
-    private var delegate: ParentTableViewCellDelegate?
-    
+    private weak var delegate: MainTableViewControllerDelegate?
     
     // MARK: - Lifecycle methods
     
@@ -41,7 +37,10 @@ final class MainTableViewController: UITableViewController {
             Пользователь: \(parentInfo?.fullName ?? "")
             Возраст: \(parentInfo?.age ?? 0)
             количество детей: \(parentInfo?.children.count ?? 0)
+            
+            Дети:
             """)
+        parentInfo?.children.forEach{print("Имя\($0.name ?? ""), возраст: \($0.age ?? 0)")}
     }
     
     // MARK: - Table view data source
@@ -90,19 +89,7 @@ final class MainTableViewController: UITableViewController {
 
 // MARK: - Extension
 
-extension MainTableViewController: MainTableViewControllerDelegate {
-    
-    func addChild() {
-        parentInfo?.children.append(Child(name: nil, age: nil))
-        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
-        if countOfSections == 1 {
-            countOfSections += 1
-            let indexSet = IndexSet(integer: countOfSections - 1)
-            tableView.insertSections(indexSet, with: .left)
-        } else {
-            tableView.insertRows(at: [IndexPath(row: (parentInfo?.children.count ?? 1) - 1 , section: 1)], with: .left)
-        }
-    }
+extension MainTableViewController: ChildTableViewCellDelegate {
     
     func deleteChild(child: Child) {
         guard let index = parentInfo?.children.firstIndex(where: {$0.id == child.id}) else {return}
@@ -111,18 +98,15 @@ extension MainTableViewController: MainTableViewControllerDelegate {
         
         tableView.performBatchUpdates{
             tableView.deleteRows(at: [IndexPath(row: index, section: 1)], with: .left)
-            
         } completion: { [weak self] isDone in
             if isDone {
                 self?.tableView.reloadData()
             }
         }
-        
         if parentInfo?.children.count == 0 {
             countOfSections = 1
             tableView.deleteSections([1], with: .none)
         }
-        
     }
     
     func editChild(child: Child, name: String?, age: String?) {
@@ -136,6 +120,9 @@ extension MainTableViewController: MainTableViewControllerDelegate {
             parentInfo?.children[index].age = ageInt
         }
     }
+}
+
+extension MainTableViewController: ParentTableViewCellDelegate {
     
     func editParent(fullName: String?, age: String?) {
         if fullName != nil && fullName != "" {
@@ -145,6 +132,18 @@ extension MainTableViewController: MainTableViewControllerDelegate {
         guard let noNilAge = age else {return}
         if let ageInt = Int(noNilAge) {
             parentInfo?.age = ageInt
+        }
+    }
+    
+    func addChild() {
+        parentInfo?.children.append(Child(name: nil, age: nil))
+        delegate?.updateButtonState(countOfCell: parentInfo?.children.count ?? 0)
+        if countOfSections == 1 {
+            countOfSections += 1
+            let indexSet = IndexSet(integer: countOfSections - 1)
+            tableView.insertSections(indexSet, with: .left)
+        } else {
+            tableView.insertRows(at: [IndexPath(row: (parentInfo?.children.count ?? 1) - 1 , section: 1)], with: .left)
         }
     }
 }

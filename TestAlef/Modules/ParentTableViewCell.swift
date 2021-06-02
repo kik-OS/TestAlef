@@ -8,11 +8,13 @@
 import UIKit
 
 // MARK: - Protocols
-protocol ParentTableViewCellDelegate {
-    func updateButtonState(countOfCell: Int)
+
+protocol ParentTableViewCellDelegate: AnyObject {
+    func editParent(fullName: String?, age: String?)
+    func addChild()
 }
 
-class ParentTableViewCell: UITableViewCell, ParentTableViewCellDelegate {
+final class ParentTableViewCell: UITableViewCell, MainTableViewControllerDelegate {
     
     // MARK: - Outlets
     
@@ -20,7 +22,7 @@ class ParentTableViewCell: UITableViewCell, ParentTableViewCellDelegate {
     
     // MARK: - Properties
     
-    var delegate: MainTableViewControllerDelegate?
+    weak var delegate: ParentTableViewCellDelegate?
     
     // MARK: - IB Actions
     

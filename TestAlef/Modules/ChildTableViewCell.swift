@@ -7,7 +7,15 @@
 
 import UIKit
 
-class ChildTableViewCell: UITableViewCell {
+// MARK: - Protocols
+
+protocol ChildTableViewCellDelegate: AnyObject {
+    func addChild()
+    func deleteChild(child: Child)
+    func editChild(child: Child, name: String?, age: String?)
+}
+
+final class ChildTableViewCell: UITableViewCell {
     
     // MARK: - Outlets
     
@@ -17,7 +25,7 @@ class ChildTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    weak var delegate: MainTableViewControllerDelegate?
+    weak var delegate: ChildTableViewCellDelegate?
     private var child: Child?
     
     // MARK: - IB Actions
@@ -42,6 +50,5 @@ class ChildTableViewCell: UITableViewCell {
     func configure(child: Child?, numberOfCell: Int) {
         self.child = child
         childNumberLabel.text = "👶🏻  Ребенок \(numberOfCell + 1)"
-        
     }
 }

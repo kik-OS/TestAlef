@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Данные -->
+        <!--Инфо-->
         <scene sceneID="BcU-lq-Q30">
             <objects>
                 <tableViewController id="R3n-UU-h7X" customClass="MainTableViewController" customModule="TestAlef" customModuleProvider="target" sceneMemberID="viewController">
@@ -197,7 +197,7 @@
                             <outlet property="delegate" destination="R3n-UU-h7X" id="j4E-X6-6kR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Данные " id="qaH-zj-Bdh">
+                    <navigationItem key="navigationItem" title="Инфо" id="qaH-zj-Bdh">
                         <barButtonItem key="rightBarButtonItem" title="Сохранить" id="fMY-Xe-4oc">
                             <connections>
                                 <action selector="saveButtonPressed:" destination="R3n-UU-h7X" id="nRo-Iv-3Eu"/>
